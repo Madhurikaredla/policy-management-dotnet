@@ -21,14 +21,16 @@ Log.Logger = new LoggerConfiguration()
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
 // builder.Host.UseSerilog();
 // Add controllers with filters
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ExceptionFilter>();
-    options.Filters.Add<RequestTimingFilter>();
-    options.Filters.Add<GlobalResponseFilter>();
-});
+// builder.Services.AddControllers(options =>
+// {
+//     options.Filters.Add<ExceptionFilter>();
+//     options.Filters.Add<RequestTimingFilter>();
+//     options.Filters.Add<GlobalResponseFilter>();
+// });
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -70,6 +72,9 @@ builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPolicyEnrollmentRepository, PolicyEnrollmentRepository>();
 
+builder.Services.AddScoped<ExceptionFilter>();
+builder.Services.AddScoped<RequestTimingFilter>();
+builder.Services.AddScoped<GlobalResponseFilter>();
 // Configure database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PolicyManagementDbConnectionString"))

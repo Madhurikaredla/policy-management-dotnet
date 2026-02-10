@@ -2,10 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using PolicyManagement.DTOs;
 using PolicyManagement.Services;
 using PolicyManagement.Constants;
+using PolicyManagement.Filters;
 
 namespace PolicyManagement.Controllers;
 
 [ApiController]
+[ServiceFilter(typeof(RequestTimingFilter))]
+[ServiceFilter(typeof(GlobalResponseFilter))]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
